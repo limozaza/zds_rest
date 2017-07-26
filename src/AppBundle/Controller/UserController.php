@@ -3,16 +3,17 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserController extends Controller
 {
     /**
-     * @Route("/users", name="users_list")
-     * @Method({"GET"})
+     * @Get(
+     *     path="/users",
+     *     name="users_list"
+     * )
      */
     public function getUsersAction()
     {
@@ -30,8 +31,10 @@ class UserController extends Controller
         return new JsonResponse($formatted);
     }
     /**
-     * @Route("/users/{id}", name="users_one")
-     * @Method({"GET"})
+     * @Get(
+     *     path="/users/{id}",
+     *     name="users_one"
+     * )
      */
     public function getUserAction(User $user)
     {

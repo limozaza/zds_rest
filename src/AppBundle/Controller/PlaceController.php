@@ -3,8 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Place;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,8 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 class PlaceController extends Controller
 {
     /**
-     * @Route("/places", name="places_list")
-     * @Method({"GET"})
+     * @Get(
+     *     path="/places",
+     *     name="places_list"
+     * )
      */
     public function getPlacesAction()
     {
@@ -31,10 +32,11 @@ class PlaceController extends Controller
 
         return new JsonResponse($formatted);
     }
-
     /**
-     * @Route("/places/{id}", name="places_one")
-     * @Method({"GET"})
+     * @Get(
+     *     path="/places/{id}",
+     *     name="places_one"
+     * )
      */
     public function getPlaceAction(Place $place)
     {
