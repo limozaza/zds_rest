@@ -3,8 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
-use FOS\RestBundle\Controller\Annotations\Get;
-use FOS\RestBundle\View\View;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,7 +11,7 @@ class UserController extends Controller
 {
     /**
      * @Rest\View()
-     * @Get(
+     * @Rest\Get(
      *     path="/users",
      *     name="users_list"
      * )
@@ -26,7 +24,7 @@ class UserController extends Controller
     }
     /**
      * @Rest\View()
-     * @Get(
+     * @Rest\Get(
      *     path="/users/{id}",
      *     name="users_one"
      * )

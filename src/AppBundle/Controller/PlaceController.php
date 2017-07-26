@@ -3,7 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Place;
-use FOS\RestBundle\Controller\Annotations\Get;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,7 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 class PlaceController extends Controller
 {
     /**
-     * @Get(
+     * @Rest\View()
+     * @Rest\Get(
      *     path="/places",
      *     name="places_list"
      * )
@@ -20,20 +21,11 @@ class PlaceController extends Controller
     {
         $places = $this->getDoctrine()->getManager()
                 ->getRepository('AppBundle:Place')->findAll();
-
-        $formatted = [];
-        foreach ($places as $place) {
-            $formatted[] = [
-                'id' => $place->getId(),
-                'name' => $place->getName(),
-                'address' => $place->getAddress(),
-            ];
-        }
-
-        return new JsonResponse($formatted);
+        return $places;
     }
     /**
-     * @Get(
+     * @Rest\View()
+     * @Rest\Get(
      *     path="/places/{id}",
      *     name="places_one"
      * )
@@ -43,12 +35,6 @@ class PlaceController extends Controller
         if(empty($place)){
             return new JsonResponse(['message'=>'Place not found'], Response::HTTP_NOT_FOUND);
         }
-        $formatted[] = [
-            'id' => $place->getId(),
-            'name' => $place->getName(),
-            'address' => $place->getAddress(),
-        ];
-
-        return new JsonResponse($formatted);
+        return $place;
     }
 }
