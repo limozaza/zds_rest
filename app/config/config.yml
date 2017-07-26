@@ -73,4 +73,7 @@ fos_rest:
     view:
         view_response_listener:
             enabled: true
+    format_listener:
+        rules:
+            - { path: '^/', priorities: ['json'], fallback_format: 'json' }
 

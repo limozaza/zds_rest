@@ -22,9 +22,7 @@ class UserController extends Controller
     {
         $users = $this->getDoctrine()->getManager()
             ->getRepository('AppBundle:User')->findAll();
-        $view = View::create($users);
-        $view->setFormat('json');
-        return $view;
+        return $users;
     }
     /**
      * @Rest\View()
@@ -38,8 +36,6 @@ class UserController extends Controller
         if(empty($user)){
             return new JsonResponse(['message'=>'Place not found'], Response::HTTP_NOT_FOUND);
         }
-        $view = View::create($user);
-        $view->setFormat('json');
-        return $view;
+        return $user;
     }
 }
