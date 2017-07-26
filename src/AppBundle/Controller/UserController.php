@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use FOS\RestBundle\Controller\Annotations\Get;
+use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -28,7 +29,13 @@ class UserController extends Controller
                 'email' => $user->getEmail()
             ];
         }
-        return new JsonResponse($formatted);
+        //Récuperation du view handler
+        $viewHandler = $this->get('fos_rest.view_handler');
+        //Creation d'une vue FOSREST
+        $view = View::create($formatted);
+        $view->setFormat('json');
+        //Gestion de la reponse
+        return $viewHandler->handle($view);
     }
     /**
      * @Get(
