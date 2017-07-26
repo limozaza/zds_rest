@@ -22,23 +22,12 @@ class UserController extends Controller
     {
         $users = $this->getDoctrine()->getManager()
             ->getRepository('AppBundle:User')->findAll();
-        $formatted = [];
-        foreach ($users as $user) {
-            $formatted[] = [
-                'id' => $user->getId(),
-                'firstname' => $user->getFirstname(),
-                'lastname' => $user->getLastname(),
-                'email' => $user->getEmail()
-            ];
-        }
-
-        //Creation d'une vue FOSREST
-        $view = View::create($formatted);
+        $view = View::create($users);
         $view->setFormat('json');
-        //Gestion de la reponse
         return $view;
     }
     /**
+     * @Rest\View()
      * @Get(
      *     path="/users/{id}",
      *     name="users_one"
@@ -49,12 +38,8 @@ class UserController extends Controller
         if(empty($user)){
             return new JsonResponse(['message'=>'Place not found'], Response::HTTP_NOT_FOUND);
         }
-        $formatted[] = [
-            'id' => $user->getId(),
-            'firstname' => $user->getFirstname(),
-            'lastname' => $user->getLastname(),
-            'email' => $user->getEmail()
-        ];
-        return new JsonResponse($formatted);
+        $view = View::create($user);
+        $view->setFormat('json');
+        return $view;
     }
 }
