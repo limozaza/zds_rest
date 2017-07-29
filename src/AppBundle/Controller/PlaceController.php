@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Place;
+use AppBundle\Form\PlaceType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -48,11 +49,16 @@ class PlaceController extends Controller
     public function postPlacesAction(Request $request)
     {
         $place = new Place();
-        $place->setName($request->get('name'));
-        $place->setAddress($request->get('address'));
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($place);
-        $em->flush();
-        return $place;
+        $form = $this->createForm(PlaceType::class, $place);
+
+        $form->submit($request->request->all());
+        if($form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($place);
+            $em->flush();
+            return $place;
+        }else{
+            return $form;
+        }
     }
 }
