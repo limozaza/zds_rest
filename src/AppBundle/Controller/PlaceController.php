@@ -61,4 +61,20 @@ class PlaceController extends Controller
             return $form;
         }
     }
+
+    /**
+     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
+     * @Rest\Delete(
+     *     path="/places/{id}",
+     *     name="places_delete"
+     * )
+     */
+    public function removePlaceAction(Place $place)
+    {
+        if($place) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($place);
+            $em->flush();
+        }
+    }
 }
