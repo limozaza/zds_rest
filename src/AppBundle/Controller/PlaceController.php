@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Place;
 use AppBundle\Form\PlaceType;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,7 +62,6 @@ class PlaceController extends Controller
             return $form;
         }
     }
-
     /**
      * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
      * @Rest\Delete(
@@ -77,4 +77,42 @@ class PlaceController extends Controller
             $em->flush();
         }
     }
+    /**
+     * @Rest\View(statusCode=Response::HTTP_OK)
+     * @Rest\Put(
+     *     path="/places/{id}",
+     *     name="places_put"
+     * )
+     */
+    public function putPlaceAction(Request $request,Place $place)
+    {
+        $this->updatePlace($request,$place,true);
+    }
+    /**
+     * @Rest\View(statusCode=Response::HTTP_OK)
+     * @Rest\Patch(
+     *     path="/places/{id}",
+     *     name="places_patch"
+     * )
+     */
+    public function patchPlaceAction(Request $request,Place $place)
+    {
+        $this->updatePlace($request,$place,false);
+    }
+    private function updatePlace(Request $request,Place $place, $clearMissing)
+    {
+        if(empty($place)){
+            return View::create(['message'=>'Place not found'], Response::HTTP_NOT_FOUND);
+        }
+        $form = $this->createForm(PlaceType::class, $place);
+        $form->submit($request->request->all(),$clearMissing);
+        if($form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            return $place;
+        }else{
+            return $form;
+        }
+    }
+
 }

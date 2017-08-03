@@ -78,5 +78,6 @@ fos_rest:
             - { path: '^/', priorities: ['json'], fallback_format: 'json' }
     body_converter:
         enabled: true
-
+    serializer:
+        serialize_null: true
 
