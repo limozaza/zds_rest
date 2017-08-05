@@ -22,7 +22,7 @@ class Place
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Serializer\Groups({"price","place"})
+     * @Serializer\Groups({"price","place","theme"})
      */
     private $id;
 
@@ -33,7 +33,7 @@ class Place
      *
      * @Assert\NotBlank()
      * @Assert\Type("string")
-     * @Serializer\Groups({"price","place"})
+     * @Serializer\Groups({"price","place","theme"})
      */
     private $name;
 
@@ -44,15 +44,23 @@ class Place
      *
      * @Assert\NotBlank()
      * @Assert\Type("string")
-     * @Serializer\Groups({"price","place"})
+     * @Serializer\Groups({"price","place","theme"})
      */
     private $address;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Price", mappedBy="place", cascade={"remove"})
+     *
      * @Serializer\Groups({"place"})
      */
     private $prices;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Theme", mappedBy="place", cascade={"remove"})
+     *
+     * @Serializer\Groups({"place"})
+     */
+    private $themes;
 
     /**
      * Constructor
@@ -60,6 +68,7 @@ class Place
     public function __construct()
     {
         $this->prices = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->themes = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -153,5 +162,39 @@ class Place
     public function getPrices()
     {
         return $this->prices;
+    }
+
+    /**
+     * Add theme
+     *
+     * @param \AppBundle\Entity\Theme $theme
+     *
+     * @return Place
+     */
+    public function addTheme(\AppBundle\Entity\Theme $theme)
+    {
+        $this->themes[] = $theme;
+
+        return $this;
+    }
+
+    /**
+     * Remove theme
+     *
+     * @param \AppBundle\Entity\Theme $theme
+     */
+    public function removeTheme(\AppBundle\Entity\Theme $theme)
+    {
+        $this->themes->removeElement($theme);
+    }
+
+    /**
+     * Get themes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getThemes()
+    {
+        return $this->themes;
     }
 }
