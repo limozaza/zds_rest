@@ -48,7 +48,7 @@ class Price
      * @Assert\GreaterThanOrEqual(
      *     value=0
      * )
-     *@Serializer\Groups({"price","place"})
+     * @Serializer\Groups({"price","place"})
      */
     private $value;
 
