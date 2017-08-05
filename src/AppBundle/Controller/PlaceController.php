@@ -14,7 +14,9 @@ use Symfony\Component\HttpFoundation\Response;
 class PlaceController extends Controller
 {
     /**
-     * @Rest\View()
+     * @Rest\View(
+     *     serializerGroups={"place"}
+     * )
      * @Rest\Get(
      *     path="/places",
      *     name="places_list"
@@ -27,7 +29,9 @@ class PlaceController extends Controller
         return $places;
     }
     /**
-     * @Rest\View()
+     * @Rest\View(
+     *     serializerGroups={"place"}
+     * )
      * @Rest\Get(
      *     path="/places/{id}",
      *     name="places_one"
@@ -41,7 +45,10 @@ class PlaceController extends Controller
         return $place;
     }
     /**
-     * @Rest\View(statusCode=Response::HTTP_CREATED)
+     * @Rest\View(
+     *     statusCode=Response::HTTP_CREATED,
+     *     serializerGroups={"place"}
+     * )
      * @Rest\Post(
      *     path="/places",
      *     name="places_add"
@@ -63,7 +70,10 @@ class PlaceController extends Controller
         }
     }
     /**
-     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
+     * @Rest\View(
+     *     statusCode=Response::HTTP_NO_CONTENT,
+     *     serializerGroups={"place"}
+     *     )
      * @Rest\Delete(
      *     path="/places/{id}",
      *     name="places_delete"
@@ -78,7 +88,10 @@ class PlaceController extends Controller
         }
     }
     /**
-     * @Rest\View(statusCode=Response::HTTP_OK)
+     * @Rest\View(
+     *     statusCode=Response::HTTP_OK,
+     *     serializerGroups={"place"}
+     * )
      * @Rest\Put(
      *     path="/places/{id}",
      *     name="places_put"
@@ -89,7 +102,10 @@ class PlaceController extends Controller
         $this->updatePlace($request,$place,true);
     }
     /**
-     * @Rest\View(statusCode=Response::HTTP_OK)
+     * @Rest\View(
+     *     statusCode=Response::HTTP_OK,
+     *     serializerGroups={"place"}
+     *)
      * @Rest\Patch(
      *     path="/places/{id}",
      *     name="places_patch"
