@@ -16,7 +16,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class UserController extends FOSRestController
 {
     /**
-     * @Rest\View()
+     * @Rest\View(
+     *     serializerGroups={"user"}
+     * )
      * @Rest\Get(
      *     path="/users",
      *     name="users_list"
@@ -29,7 +31,9 @@ class UserController extends FOSRestController
         return $users;
     }
     /**
-     * @Rest\View()
+     * @Rest\View(
+     *     serializerGroups={"user"}
+     * )
      * @Rest\Get(
      *     path="/users/{id}",
      *     name="users_one"
@@ -43,7 +47,10 @@ class UserController extends FOSRestController
         return $user;
     }
     /**
-     * @Rest\View(statusCode=Response::HTTP_CREATED)
+     * @Rest\View(
+     *     statusCode=Response::HTTP_CREATED,
+     *     serializerGroups={"user"}
+     * )
      * @Rest\Post(
      *     path="/users",
      *     name="users_add"
@@ -71,7 +78,10 @@ class UserController extends FOSRestController
         }
     }
     /**
-     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
+     * @Rest\View(
+     *     statusCode=Response::HTTP_NO_CONTENT,
+     *     serializerGroups={"user"}
+     * )
      * @Rest\Delete(
      *     path="/users/{id}",
      *     name="users_delete"
@@ -86,7 +96,10 @@ class UserController extends FOSRestController
         }
     }
     /**
-     * @Rest\View(statusCode=Response::HTTP_OK)
+     * @Rest\View(
+     *     statusCode=Response::HTTP_OK,
+     *     serializerGroups={"user"}
+     * )
      * @Rest\Put(
      *     path="/users/{id}",
      *     name="users_put"
@@ -97,7 +110,7 @@ class UserController extends FOSRestController
         $this->updateUser($request,$user,true);
     }
     /**
-     * @Rest\View(statusCode=Response::HTTP_OK)
+     * @Rest\View(statusCode=Response::HTTP_OK,serializerGroups={"user"})
      * @Rest\Patch(
      *     path="/users/{id}",
      *     name="users_patch"
