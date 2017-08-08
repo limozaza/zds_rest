@@ -121,6 +121,37 @@ class UserController extends FOSRestController
         $this->updateUser($request,$user,false);
     }
 
+    /**
+     * @Rest\View(statusCode=Response::HTTP_OK,serializerGroups={"place"})
+     * @Rest\Get(
+     *     path="/users/{id}/suggestions",
+     *     name="users_suggestions"
+     * )
+     */
+    public function getUserSuggestionsAction(Request $request, $id)
+    {
+        /**
+         * @var $user User
+         */
+        $user = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:User')
+                ->find($id);
+
+        if(empty($user)){
+            return View::create(['message'=>'User not found'],Response::HTTP_NOT_FOUND);
+        }
+        $suggestions= [];
+        $places = $this->get('doctrine.orm.entity_manager')
+            ->getRepository('AppBundle:Place')
+            ->findAll();
+        foreach ($places as $place){
+            if($user->preferencesMatch($place->getThemes())){
+                $suggestions[] = $place;
+            }
+        }
+        return $suggestions;
+    }
+
 
     private function updateUser(Request $request,User $user, $clearMissing)
     {

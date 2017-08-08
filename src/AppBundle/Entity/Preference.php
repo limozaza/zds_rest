@@ -64,6 +64,10 @@ class Preference
      */
     private $user;
 
+    public function match(Theme $theme){
+        return $this->name === $theme->getName();
+    }
+
 
     /**
      * Get id

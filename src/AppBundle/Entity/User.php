@@ -16,6 +16,8 @@ use Symfony\Component\Serializer\Annotation as Serializer;
  */
 class User
 {
+
+    const MATCH_VALUE_THRESHOLD = 25;
     /**
      * @var int
      *
@@ -66,6 +68,27 @@ class User
      * @Serializer\Groups({"user"})
      */
     private $preferences;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->preferences = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function preferencesMatch($themes)
+    {
+        $matchValue = 0;
+        foreach ($this->preferences as $preference){
+            foreach ($themes as $theme){
+                if($preference->match($theme)){
+                    $matchValue += $preference->getValue() * $theme->getValue();
+                }
+            }
+        }
+        return $matchValue >= self::MATCH_VALUE_THRESHOLD;
+    }
 
 
     /**
@@ -149,13 +172,7 @@ class User
     {
         return $this->email;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->preferences = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+
 
     /**
      * Add preference
