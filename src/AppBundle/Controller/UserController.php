@@ -59,10 +59,17 @@ class UserController extends FOSRestController
     public function postUserAction(Request $request)
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user,
+            [
+                'validation_groups' => ['Default', 'New']
+            ]
+            );
         $form->submit($request->request->all());
 
         if($form->isValid()){
+            $encoder = $this->get('security.password_encoder');
+            $encoded = $encoder->encodePassword($user,$user->getPlainPassword());
+            $user->setPassword($encoded);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
@@ -158,9 +165,21 @@ class UserController extends FOSRestController
         if(empty($user)){
             return View::create(['message'=>'Place not found'], Response::HTTP_NOT_FOUND);
         }
-        $form = $this->createForm(UserType::class, $user);
+        if($clearMissing){
+            $options = ['validation_groups'=>['Default', 'FullUpdate']];
+        }else{
+            $options = [];
+        }
+
+
+        $form = $this->createForm(UserType::class, $user, $options);
         $form->submit($request->request->all(),$clearMissing);
         if($form->isValid()){
+            if(!empty($user->getPlainPassword())){
+                $encoder = $this->get('security.password_encoder');
+                $encoded = $encoder->encodePassword($user,$user->getPlainPassword());
+                $user->setPassword($encoded);
+            }
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             return $user;

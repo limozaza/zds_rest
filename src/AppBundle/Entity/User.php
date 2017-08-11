@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation as Serializer;
@@ -14,7 +15,7 @@ use Symfony\Component\Serializer\Annotation as Serializer;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @UniqueEntity("email")
  */
-class User
+class User implements UserInterface
 {
 
     const MATCH_VALUE_THRESHOLD = 25;
@@ -63,11 +64,31 @@ class User
     private $email;
 
     /**
+     * @ORM\Column(name="password", type="string", length=255)
+     * @Serializer\Groups({"user"})
+     */
+    private $password;
+
+    /**
+     * @Assert\NotBlank(
+     *     groups={"New","FullUpdate"}
+     * )
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *     min=4,
+     *     max=50
+     * )
+     */
+    private $plainPassword;
+
+    /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Preference", mappedBy="user", cascade={"remove"})
      *
      * @Serializer\Groups({"user"})
      */
     private $preferences;
+
+
 
     /**
      * Constructor
@@ -207,4 +228,54 @@ class User
     {
         return $this->preferences;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param mixed $password
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param mixed $plainPassword
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    public function getRoles()
+    {
+        return [];
+    }
+    public function getUsername()
+    {
+        return null;
+    }
+    public function getSalt()
+    {
+        return $this->email;
+    }
+    public function eraseCredentials()
+    {
+        $this->plainPassword = null;
+    }
+
 }
