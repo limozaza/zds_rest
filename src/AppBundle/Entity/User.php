@@ -26,7 +26,7 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Serializer\Groups({"user","preference"})
+     * @Serializer\Groups({"user","preference","auth-token"})
      */
     private $id;
 
@@ -37,7 +37,7 @@ class User implements UserInterface
      * @Assert\NotBlank()
      * @Assert\Type("string")
      *
-     * @Serializer\Groups({"user","preference"})
+     * @Serializer\Groups({"user","preference","auth-token"})
      */
     private $firstname;
 
@@ -48,7 +48,7 @@ class User implements UserInterface
      * @Assert\NotBlank()
      * @Assert\Type("string")
      *
-     * @Serializer\Groups({"user","preference"})
+     * @Serializer\Groups({"user","preference","auth-token"})
      */
     private $lastname;
 
@@ -59,13 +59,12 @@ class User implements UserInterface
      * @Assert\NotBlank()
      * @Assert\Email()
      *
-     * @Serializer\Groups({"user","preference"})
+     * @Serializer\Groups({"user","preference","auth-token"})
      */
     private $email;
 
     /**
      * @ORM\Column(name="password", type="string", length=255)
-     * @Serializer\Groups({"user"})
      */
     private $password;
 
